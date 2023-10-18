@@ -19,6 +19,18 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
+        
+        stage('Code Quality Check via SonarQube') {
+            steps {
+                script {
+                def scannerHome = tool 'sonarqube';
+                    withSonarQubeEnv(installationName: 'sq1') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    }
+                }
+            }
+
         stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
