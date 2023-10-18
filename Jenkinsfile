@@ -16,12 +16,22 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-        stage('Deliver') {
+        stage('Code Quality Check via SonarQube') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                sh './jenkins/scripts/kill.sh'
+                script {
+                def scannerHome = tool 'sq1';
+                    withSonarQubeEnv(installationName: 'sq1') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                    }
+                }
             }
-        }
+        // stage('Deliver') {
+        //     steps {
+        //         sh './jenkins/scripts/deliver.sh'
+        //         input message: 'Finished using the web site? (Click "Proceed" to continue)'
+        //         sh './jenkins/scripts/kill.sh'
+        //     }
+        // }
     }
 }
