@@ -19,7 +19,7 @@ pipeline {
         stage('Code Quality Check via SonarQube') {
             steps {
                 script {
-                def scannerHome = tool 'sq1';
+                def scannerHome = tool 'sonar-scanner';
                     withSonarQubeEnv(installationName: 'sq1') {
                         sh "${scannerHome}/bin/sonar-scanner"
                         }
