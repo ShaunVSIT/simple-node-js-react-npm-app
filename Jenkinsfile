@@ -16,16 +16,14 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-        stage('Code Quality Check via SonarQube') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarScanner'
-                    withSonarQubeEnv('SonarServer') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                        }
-                    }
+
+        stage('SonarQube analysis') {
+            def scannerHome = tool 'SonarScanner';
+            withSonarQubeEnv('SonarServer') { // If you have configured more than one global server connection, you can specify its name
+                sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
+        }
         // stage('Deliver') {
         //     steps {
         //         sh './jenkins/scripts/deliver.sh'
