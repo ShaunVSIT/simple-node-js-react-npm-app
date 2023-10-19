@@ -16,16 +16,12 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
-       stage('Code Quality Check via SonarQube') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarScanner'
-                    withSonarQubeEnv('SonarServer') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                        }
-                    }
-            }      
-       } 
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'SonarScanner';
+            withSonarQubeEnv() {
+            sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
         // stage('Deliver') {
         //     steps {
         //         sh './jenkins/scripts/deliver.sh'
